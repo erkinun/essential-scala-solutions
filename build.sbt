@@ -1,4 +1,4 @@
-name := "workbench"
+name := "essential-scala-solutions"
 
 version := "0.1"
 
