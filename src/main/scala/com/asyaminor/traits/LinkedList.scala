@@ -3,7 +3,7 @@ package com.asyaminor.traits
 // 5.1.3.1 Generic List
 sealed trait LinkedList[A] {
   // 4.6.3.1 A List of Methods
-  def length: Int = fold(0, (_, len) => len + 1)
+  def length: Int = fold(0, (_, len: Int) => len + 1)
 
   // 5.1.3.2 Working With Generic Types
   def contains(a: A): Boolean = this match {
