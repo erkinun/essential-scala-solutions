@@ -3,10 +3,7 @@ package com.asyaminor.traits
 // 5.1.3.1 Generic List
 sealed trait LinkedList[A] {
   // 4.6.3.1 A List of Methods
-  def length: Int = this match {
-    case End() => 0
-    case Pair(_, t) => 1 + t.length
-  }
+  def length: Int = fold(0, (_, len) => len + 1)
 
   // 5.1.3.2 Working With Generic Types
   def contains(a: A): Boolean = this match {
@@ -25,6 +22,12 @@ sealed trait LinkedList[A] {
     } else {
       t.apply(n - 1)
     }
+  }
+
+  // 5.2.3.1 A Better Abstraction
+  def fold[B](end: B, f: (A, B) => B): B = this match {
+    case End() => end
+    case Pair(h, t) => f(h, t.fold(end, f))
   }
 }
 case class End[T]() extends LinkedList[T]
