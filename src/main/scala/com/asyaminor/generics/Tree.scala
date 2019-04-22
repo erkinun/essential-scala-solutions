@@ -1,4 +1,4 @@
-package com.asyaminor.traits.ast
+package com.asyaminor.generics
 
 // 5.3.4.1 Tree
 sealed trait Tree[T] {
