@@ -4,9 +4,10 @@ package com.asyaminor.generics
 sealed trait Sum[T, U] {
   // 5.4.6.3 Folding Sum
   def fold[Z](left: T => Z)(right: U => Z): Z = this match {
-    case Left(value) => left(value)
-    case Right(value) => right(value)
+    case Failure(value) => left(value)
+    case Success(value) => right(value)
   }
 }
-case class Left[T, U](value: T) extends Sum[T, U]
-case class Right[T, U](value: U) extends Sum[T, U]
+// 5.5.4.4 Sum continued
+case class Failure[T, U](value: T) extends Sum[T, U]
+case class Success[T, U](value: U) extends Sum[T, U]
