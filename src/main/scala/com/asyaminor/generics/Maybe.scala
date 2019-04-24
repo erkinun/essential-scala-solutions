@@ -9,6 +9,9 @@ sealed trait Maybe[T] {
     case Full(value) => Full(fn(value))
   }
 
+  // 5.5.4.2 Mapping Maybe bonus points
+  def mapBonus[U](fn: T => U): Maybe[U] = flatMap(t => Full(fn(t)))
+
   // 5.5.2 FlatMap
   def flatMap[U](fn: T => Maybe[U]): Maybe[U] = this match {
     case Empty() => Empty[U]()
