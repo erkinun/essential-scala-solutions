@@ -2,6 +2,18 @@ package com.asyaminor.generics
 
 // 5.4.3.1 Exercise: Generic Sum Type
 sealed trait Sum[T, U] {
+
+  // 5.5.4.4 Sum continued with map and flatMap
+  def map[V](f: U => V): Sum[T, V] = this match {
+    case Failure(value) => Failure(value)
+    case Success(value) => Success(f(value))
+  }
+
+  def flatMap[V](f: U => Sum[T, V]): Sum[T, V] = this match {
+    case Failure(value) => Failure(value)
+    case Success(value) => f(value)
+  }
+
   // 5.4.6.3 Folding Sum
   def fold[Z](left: T => Z)(right: U => Z): Z = this match {
     case Failure(value) => left(value)
