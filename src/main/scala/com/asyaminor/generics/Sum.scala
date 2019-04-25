@@ -1,7 +1,7 @@
 package com.asyaminor.generics
 
 // 5.4.3.1 Exercise: Generic Sum Type
-sealed trait Sum[T, U] {
+sealed trait Sum[+T, +U] {
 
   // 5.5.4.4 Sum continued with map and flatMap
   def map[V](f: U => V): Sum[T, V] = this match {
@@ -9,7 +9,8 @@ sealed trait Sum[T, U] {
     case Success(value) => Success(f(value))
   }
 
-  def flatMap[V](f: U => Sum[T, V]): Sum[T, V] = this match {
+  // 5.6.4.1 Exercise: Covariant Sum
+  def flatMap[TT >: T, V](f: U => Sum[TT, V]): Sum[TT, V] = this match {
     case Failure(value) => Failure(value)
     case Success(value) => f(value)
   }
@@ -21,5 +22,5 @@ sealed trait Sum[T, U] {
   }
 }
 // 5.5.4.4 Sum continued
-case class Failure[T, U](value: T) extends Sum[T, U]
-case class Success[T, U](value: U) extends Sum[T, U]
+case class Failure[T](value: T) extends Sum[T, Nothing]
+case class Success[U](value: U) extends Sum[Nothing, U]
