@@ -1,16 +1,36 @@
 package com.asyaminor.traits.ast
 
+import com.asyaminor.generics.Sum
+import com.asyaminor.generics.Success
+import com.asyaminor.generics.Failure
+
 sealed trait Expression {
-  def eval: Result = this match {
+  // 5.6.6.2 Calculator Again
+  def eval: Sum[String, Double] = this match {
     case Number(v) => Success(v)
-    case Addition(l, r) => l.eval + r.eval
-    case Subtraction(l, r) => l.eval - r.eval
-    case Division(l, r) => l.eval / r.eval
+    case Addition(l, r) => lift2(l, r, (l, r) => Success(l + r))
+    case Subtraction(l, r) => lift2(l, r, (l , r) => Success(l - r))
+    case Division(l, r) => lift2(l, r, (l, r) => {
+      if (r == 0) {
+        Failure("Division by zero")
+      }
+      else {
+        Success(l / r)
+      }
+    })
     case SquareRoot(e) => e.eval match {
       case Success(v) =>
-        if (v < 0.0) Fail("Square root of negative number")
+        if (v < 0.0) Failure("Square root of negative number")
         else Success(Math.sqrt(v))
-      case f @ Fail(_) => f
+      case f @ Failure(_) => f
+    }
+  }
+
+  def lift2(left: Expression, right: Expression, fn: (Double, Double) => Sum[String, Double]): Sum[String, Double] = {
+    left.eval.flatMap { l =>
+      right.eval.flatMap { r =>
+        fn(l, r)
+      }
     }
   }
 }
