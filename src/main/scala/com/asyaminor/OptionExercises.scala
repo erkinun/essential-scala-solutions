@@ -21,4 +21,18 @@ object OptionExercises {
       val3 <- opt3
     } yield val1 + val2 + val3
   }
+
+  // 6.5.1.3 A(nother) Short Division Exercise
+  def divide(int1: Int, int2: Int): Option[Int] = {
+    if (int2 == 0) { None }
+    else { Some(int1 / int2) }
+  }
+
+  def divideOptions(opt1: Option[Int], opt2: Option[Int]): Option[Int] = {
+    for {
+      val1 <- opt1
+      val2 <- opt2
+      result <- divide(val1, val2)
+    } yield result
+  }
 }
