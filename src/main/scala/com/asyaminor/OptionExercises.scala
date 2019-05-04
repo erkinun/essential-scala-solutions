@@ -39,7 +39,7 @@ object OptionExercises {
   }
 
   // 6.5.1.4 A Simple Calculator
-  def parseInt(s: String): Option[Int] = Try(s.toInt).fold(None[Int], i => Some(i))
+  def parseInt(s: String): Option[Int] = Try(s.toInt).fold(_ => None, i => Some(i))
 
   sealed trait Operator
   case object Add extends Operator
