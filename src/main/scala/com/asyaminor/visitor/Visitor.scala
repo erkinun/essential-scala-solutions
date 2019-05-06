@@ -2,7 +2,8 @@ package com.asyaminor.visitor
 
 import java.util.Date
 
-import com.asyaminor.json._
+import com.asyaminor.json.{JsObject, JsString, JsValue, JsWriter}
+import com.asyaminor.json.JsWriter.JsUtil
 
 sealed trait Visitor {
   def id: String
@@ -36,8 +37,8 @@ object Visitor {
 
   implicit object VisitorWriter extends JsWriter[Visitor] {
     def write(value: Visitor) = value match {
-      case anon: Anonymous => JsUtil.toJson(anon)
-      case user: User      => JsUtil.toJson(user)
+      case anon: Anonymous => anon.toJson
+      case user: User      => user.toJson
     }
   }
 }

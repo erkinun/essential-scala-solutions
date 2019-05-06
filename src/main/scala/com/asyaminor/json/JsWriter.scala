@@ -5,6 +5,9 @@ trait JsWriter[T] {
   def write(t: T): JsValue
 }
 
-object JsUtil {
-  def toJson[T](t: T)(implicit writer: JsWriter[T]): JsValue = writer.write(t)
+object JsWriter {
+  // 7.9.2 Prettier Conversion Syntax
+  implicit class JsUtil[T](t: T) {
+    def toJson()(implicit writer: JsWriter[T]): JsValue = writer.write(t)
+  }
 }
